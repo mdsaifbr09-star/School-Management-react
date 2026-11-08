@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Al-Falah Public School — Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="School management dashboard: students, attendance, fees, teachers and timetable.">
+<meta property="og:title" content="Al-Falah Public School — Management System">
+<meta property="og:description" content="A premium React dashboard to manage students, attendance, fees, teachers, timetable and notices.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5fb;--card:#fff;--ink:#0f172a;--mut:#64748b;--line:#e4e8f2;--pri:#4f46e5;--pri2:#7c3aed;--side:#0b1230;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f24;--card:#121a38;--ink:#e8ecf8;--mut:#93a0bf;--line:#22305a;--side:#060a1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0f24;--card:#121a38;--ink:#e8ecf8;--mut:#93a0bf;--line:#22305a;--side:#060a1a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--side);color:#c7d0ee;padding:22px 16px;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;gap:11px;align-items:center;padding:4px 8px 20px;color:#fff}
+.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--pri),var(--pri2));display:grid;place-items:center;font-weight:800;flex:none}
+.brand b{display:block;font-size:14px;line-height:1.25}.brand small{color:#8c97bd;font-size:11.5px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nb{display:flex;gap:11px;align-items:center;padding:11px 12px;border-radius:11px;border:0;background:none;color:inherit;font:inherit;font-weight:500;cursor:pointer;text-align:left;width:100%}
+.nb:hover{background:rgba(255,255,255,.07)}
+.nb.on{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:0 8px 20px -8px var(--pri)}
+.yr{margin-top:auto;padding:14px;border-radius:14px;background:rgba(255,255,255,.06);font-size:12px;color:#9aa6cf}
+.yr b{color:#fff;display:block;font-size:13px;margin-bottom:2px}
+main{padding:26px 30px 48px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+h1{font-size:24px;letter-spacing:-.02em}.sub{color:var(--mut);margin-top:3px}
+.me{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);padding:6px 16px 6px 6px;border-radius:999px;font-weight:600}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin-bottom:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}.grid4 .card{margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid3 .card{margin:0}
+.g2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}.g2 .card{margin-bottom:16px}
+.stat{display:flex;gap:14px;align-items:center}
+.ic{width:46px;height:46px;border-radius:13px;background:color-mix(in srgb,var(--pri) 13%,transparent);color:var(--pri);display:grid;place-items:center;flex:none}
+.k{color:var(--mut);font-size:12.5px}.v{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2}.s{font-size:12px;color:var(--ok);font-weight:500}
+h3{font-size:15.5px;margin-bottom:14px}
+.bars{display:flex;gap:14px;height:220px;align-items:flex-end}
+.bar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;color:var(--mut);font-size:12px}
+.bar i{width:100%;max-width:48px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,var(--pri2),var(--pri));display:flex;justify-content:center;color:#fff;font-style:normal;font-size:11px;padding-top:6px;font-weight:600}
+.donut{width:150px;height:150px;border-radius:50%;margin:4px auto 16px;display:grid;place-items:center;position:relative}
+.donut::after{content:"";position:absolute;inset:20px;border-radius:50%;background:var(--card)}
+.donut b{position:relative;z-index:1;font-size:26px}
+.lg{display:flex;justify-content:space-between;padding:6px 0;color:var(--mut)}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px}
+.x{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border:0}
+.who{display:flex;gap:11px;align-items:center;font-weight:600}
+.pill{padding:3px 11px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok)}
+.warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.meter{width:80px;height:6px;border-radius:9px;background:var(--line);display:inline-block;vertical-align:middle;margin-right:8px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ok)}
+.btn{border:0;border-radius:10px;padding:9px 16px;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.btn.g{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 12px;font-size:12.5px}
+.tb{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+input,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+input:focus,select:focus{outline:2px solid var(--pri);outline-offset:-1px}
+.sw{flex:1;min-width:160px;position:relative}
+.sw input{width:100%;padding-left:36px}
+.sw svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--mut)}
+.tg{width:44px;height:25px;border-radius:99px;background:var(--line);border:0;position:relative;cursor:pointer;transition:.2s;flex:none}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.2s}
+.tg.on{background:var(--ok)}.tg.on::after{left:22px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:12px}
+.row:last-child{border:0}
+.tc{text-align:center}.tc .av{width:60px;height:60px;font-size:20px;margin-bottom:10px}
+.tc small{color:var(--mut);display:block;margin-top:2px}
+.ttg{display:grid;grid-template-columns:96px repeat(5,1fr);gap:8px;min-width:640px}
+.ttg div{padding:13px 8px;border-radius:10px;text-align:center;font-weight:600;font-size:13px}
+.ttg .th{color:var(--mut);font-size:12px;font-weight:600}
+.cc{background:color-mix(in srgb,var(--h) 20%,transparent)}
+.toast{position:fixed;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:12px;font-weight:600;z-index:9}
+@media(max-width:860px){.app{grid-template-columns:1fr}.side{flex-direction:row;padding:12px;overflow-x:auto;align-items:center}.brand{padding:0 10px 0 4px}.brand small,.yr{display:none}.nav{flex-direction:row}.nb{width:auto;white-space:nowrap;padding:9px 13px}.grid4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}main{padding:18px 16px 48px}}
+.ib{position:relative;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer}.ib i{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--bad)}.top .sw{flex:none;width:230px}
+@media(max-width:520px){.grid4,.grid3{grid-template-columns:1fr}h1{font-size:21px}.top .sw{width:100%;flex:1}}
+body{background-image:radial-gradient(900px 420px at 90% -8%,color-mix(in srgb,var(--pri) 16%,transparent),transparent),radial-gradient(700px 360px at -5% 105%,color-mix(in srgb,var(--pri2) 10%,transparent),transparent);background-attachment:fixed}
+.side{background:linear-gradient(180deg,#141f52,var(--side));box-shadow:4px 0 30px -12px rgba(0,0,0,.4)}
+.card{border-radius:20px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 12px 28px -18px rgba(15,23,42,.25)}
+.stat{transition:transform .2s,box-shadow .2s}.stat:hover{transform:translateY(-3px);box-shadow:0 18px 36px -18px var(--pri)}
+.grid4>.card:nth-child(1){--c:#6366f1}.grid4>.card:nth-child(2){--c:#0ea5e9}.grid4>.card:nth-child(3){--c:#10b981}.grid4>.card:nth-child(4){--c:#f59e0b}
+.stat .ic{background:color-mix(in srgb,var(--c,var(--pri)) 15%,transparent);color:var(--c,var(--pri))}
+.hero{border-radius:22px;padding:26px 28px;margin-bottom:16px;color:#fff;background:linear-gradient(120deg,var(--pri),var(--pri2) 60%,#c026d3);position:relative;overflow:hidden;box-shadow:0 20px 40px -20px var(--pri)}
+.hero::after{content:"";position:absolute;right:-60px;top:-70px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.14)}
+.hero h2{font-size:25px;letter-spacing:-.02em;margin:6px 0}.hero p{opacity:.92;max-width:520px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1}.chips span{background:rgba(255,255,255,.2);padding:6px 14px;border-radius:999px;font-weight:600;font-size:12.5px}
+tbody tr:hover{background:color-mix(in srgb,var(--pri) 6%,transparent)}
+.btn{box-shadow:0 8px 18px -10px var(--pri);transition:transform .15s}.btn:hover{transform:translateY(-1px)}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}.pg{animation:up .35s ease}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lbox{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:34px 30px;box-shadow:0 30px 60px -30px rgba(15,23,42,.45);animation:up .4s ease}
+.lbox .logo{width:54px;height:54px;font-size:22px;border-radius:16px;color:#fff;margin:0 auto 16px}
+.lbox h2{text-align:center;font-size:22px;letter-spacing:-.02em}.lbox p{text-align:center;color:var(--mut);margin:6px 0 22px}
+.lbox label{display:block;font-size:12.5px;font-weight:600;color:var(--mut);margin:14px 0 6px}.lbox input{width:100%}.lbox .btn{width:100%;margin-top:22px;padding:12px}
+.hint{margin-top:14px;font-size:12px;color:var(--mut);text-align:center}
+.ov{position:fixed;inset:0;background:rgba(8,12,30,.55);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:30;padding:16px;animation:up .2s}
+.md{background:var(--card);border-radius:24px;width:100%;max-width:440px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+.mh{background:linear-gradient(120deg,var(--pri),var(--pri2));color:#fff;padding:26px;display:flex;gap:16px;align-items:center}.mh .av{width:64px;height:64px;font-size:22px;background:rgba(255,255,255,.22)}.mh b{font-size:18px;display:block}.mh small{opacity:.88}
+.mb{padding:22px 26px 26px}.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}.kv div{background:var(--bg);border-radius:14px;padding:12px 14px}.kv small{color:var(--mut);display:block;font-size:11.5px}.kv b{font-size:16px}
+@media(max-width:860px){.side{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;background:linear-gradient(180deg,#141f52,var(--side));box-shadow:0 -10px 30px -10px rgba(0,0,0,.45)}.brand{display:none}.nav{gap:2px;width:100%}.nb{flex-direction:column;gap:4px;font-size:10.5px;padding:8px 10px;min-width:64px;justify-content:center;align-items:center;text-align:center}main{padding-bottom:120px}.toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}.hero{padding:22px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+const {useState}=React;
+const html=htm.bind(React.createElement);
+const I={grid:"M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z",users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",check:"M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11",wallet:"M1 4h22v16H1zM1 10h22",teacher:"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z",clock:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 6v6l4 2",bell:"M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0",search:"M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16M21 21l-4.3-4.3",trash:"M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6",moon:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"};
+const Ico=({n,s=18})=>html`<svg viewBox="0 0 24 24" width=${s} height=${s} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d=${I[n]}/></svg>`;
+const ini=n=>n.split(" ").map(x=>x[0]).join("").slice(0,2);
+const Av=({n})=>html`<span class="av">${ini(n)}</span>`;
+const fc=f=>f==="Paid"?"ok":f==="Due"?"warn":"bad";
+const Pill=({t})=>html`<span class=${"pill "+fc(t)}>${t}</span>`;
+const Att=({v})=>html`<span><span class="meter"><i style=${{width:v+"%",background:v<80?"var(--warn)":"var(--ok)"}}></i></span>${v}%</span>`;
+const S0=[["Ayaan Khan","10-A",94,"Paid","A"],["Zainab Sheikh","10-A",88,"Due","A-"],["Imran Siddiqui","9-B",76,"Paid","B+"],["Fatima Ansari","9-B",91,"Paid","A"],["Zeeshan Qureshi","8-C",82,"Overdue","B"],["Ayesha Malik","8-C",97,"Paid","A+"],["Rayyan Ahmed","10-A",85,"Due","B+"],["Mariam Begum","9-B",93,"Paid","A"],["Hamza Farooqui","8-C",71,"Overdue","C+"],["Sara Hussain","10-A",90,"Paid","A-"]].map((r,i)=>({id:i+1,name:r[0],cls:r[1],att:r[2],fee:r[3],grade:r[4],roll:r[1].replace("-","")+"-"+String(i+1).padStart(2,"0")}));
+const CL=["10-A","9-B","8-C"];
+
+function Dash({st}){
+  const n=st.length,paid=st.filter(s=>s.fee==="Paid").length,due=st.filter(s=>s.fee==="Due").length,od=n-paid-due;
+  const avg=Math.round(st.reduce((a,s)=>a+s.att,0)/n),pp=Math.round(paid/n*100),dp=Math.round(due/n*100);
+  const wk=[["Mon",94],["Tue",92],["Wed",88],["Thu",95],["Fri",90],["Sat",81]];
+  const ev=[["04","Aug","Science Fair","10:00 AM · Main Hall"],["09","Aug","Parent–Teacher Meeting","09:00 AM · Auditorium"],["14","Aug","Independence Day Assembly","08:30 AM · Ground"]];
+  return html`<div>
+    <div class="hero"><small>Good morning 👋</small><h2>Al-Falah Public School</h2><p>Welcome back, Md Saif. Here is today’s overview of your school.</p><div class="chips"><span>${612+n-10} students</span><span>${avg}% avg. attendance</span><span>${od} overdue fees</span></div></div>
+    <div class="grid4">${[["Total students",612+n-10,"users","+18 this term"],["Teaching staff",38,"teacher","3 on leave"],["Avg. attendance",avg+"%","check","this term"],["Fees collected",pp+"%","wallet",od+" overdue"]].map(c=>html`<div class="card stat" key=${c[0]}><div class="ic"><${Ico} n=${c[2]}/></div><div><div class="k">${c[0]}</div><div class="v">${c[1]}</div><div class="s">${c[3]}</div></div></div>`)}</div>
+    <div class="g2">
+      <div class="card"><h3>Attendance this week</h3><div class="bars">${wk.map(([d,v])=>html`<div class="bar" key=${d}><i style=${{height:v+"%"}}>${v}</i>${d}</div>`)}</div></div>
+      <div class="card"><h3>Fee collection</h3>
+        <div class="donut" style=${{background:`conic-gradient(var(--ok) 0 ${pp}%,var(--warn) ${pp}% ${pp+dp}%,var(--bad) ${pp+dp}% 100%)`}}><b>${pp}%</b></div>
+        <div class="lg"><span><i style=${{background:"var(--ok)"}}></i>Paid</span><b>${paid}</b></div>
+        <div class="lg"><span><i style=${{background:"var(--warn)"}}></i>Due</span><b>${due}</b></div>
+        <div class="lg"><span><i style=${{background:"var(--bad)"}}></i>Overdue</span><b>${od}</b></div>
+      </div>
+    </div>
+    <div class="g2"><div class="card"><h3>Top performers</h3>${st.filter(s=>s.grade.startsWith("A")).slice(0,4).map(s=>html`<div class="row" key=${s.id}><div class="who"><${Av} n=${s.name}/><div>${s.name}<div class="k" style=${{fontWeight:400}}>Class ${s.cls}</div></div></div><span class="pill ok">Grade ${s.grade}</span></div>`)}</div><div class="card"><h3>Notice board</h3>${[["Mid-term exam schedule released","Exam","warn"],["Term 2 fee date extended","Fees","bad"],["Sports Day on 4 August","Event","ok"]].map(n=>html`<div class="row" key=${n[0]}><b>${n[0]}</b><span class=${"pill "+n[2]}>${n[1]}</span></div>`)}</div></div>
+    <div class="g2">
+      <div class="card"><h3>Recent admissions</h3><div class="x"><table><thead><tr><th>Student</th><th>Roll</th><th>Class</th><th>Fees</th></tr></thead><tbody>${[...st].reverse().slice(0,5).map(s=>html`<tr key=${s.id}><td><div class="who"><${Av} n=${s.name}/>${s.name}</div></td><td>${s.roll}</td><td>${s.cls}</td><td><${Pill} t=${s.fee}/></td></tr>`)}</tbody></table></div></div>
+      <div class="card"><h3>Upcoming events</h3>${ev.map(e=>html`<div class="row" key=${e[2]} style=${{justifyContent:"flex-start"}}><div class="ic" style=${{flexDirection:"column",fontWeight:700,lineHeight:1.1,fontSize:15}}>${e[0]}<small style=${{fontSize:10,fontWeight:500}}>${e[1]}</small></div><div><b>${e[2]}</b><div class="k">${e[3]}</div></div></div>`)}</div>
+    </div>
+  </div>`;
+}
+
+function Stu({st,setSt,say,q,setQ,setSel}){
+  const [c,setC]=useState("All"),[nm,setNm]=useState(""),[nc,setNc]=useState("10-A");
+  const list=st.filter(s=>(c==="All"||s.cls===c)&&s.name.toLowerCase().includes(q.toLowerCase()));
+  const add=()=>{if(!nm.trim())return say("Please enter a student name");setSt([...st,{id:Date.now(),name:nm.trim(),cls:nc,att:100,fee:"Due",grade:"—",roll:nc.replace("-","")+"-"+String(st.length+1).padStart(2,"0")}]);setNm("");say("Student added")};
+  return html`<div>
+    <div class="card"><h3>Add new student</h3><div class="tb"><input style=${{flex:1,minWidth:170}} placeholder="Full name" value=${nm} onInput=${e=>setNm(e.target.value)}/><select value=${nc} onChange=${e=>setNc(e.target.value)}>${CL.map(x=>html`<option key=${x}>${x}</option>`)}</select><button class="btn" onClick=${add}>Add student</button></div></div>
+    <div class="card"><div class="tb" style=${{marginBottom:12}}><div class="sw"><${Ico} n="search" s=${16}/><input placeholder="Search students" value=${q} onInput=${e=>setQ(e.target.value)}/></div><select value=${c} onChange=${e=>setC(e.target.value)}><option>All</option>${CL.map(x=>html`<option key=${x}>${x}</option>`)}</select></div>
+    <div class="x"><table><thead><tr><th>Student</th><th>Roll no.</th><th>Class</th><th>Attendance</th><th>Fees</th><th>Grade</th><th></th></tr></thead><tbody>${list.map(s=>html`<tr key=${s.id} style=${{cursor:"pointer"}} onClick=${()=>setSel(s)}><td><div class="who"><${Av} n=${s.name}/>${s.name}</div></td><td>${s.roll}</td><td>${s.cls}</td><td><${Att} v=${s.att}/></td><td><${Pill} t=${s.fee}/></td><td><b>${s.grade}</b></td><td><button class="btn g sm" aria-label="Delete" onClick=${ev=>{ev.stopPropagation();setSt(st.filter(x=>x.id!==s.id));say("Student removed")}}><${Ico} n="trash" s=${14}/></button></td></tr>`)}</tbody></table></div>
+    ${list.length===0&&html`<div class="k" style=${{padding:16,textAlign:"center"}}>No students found</div>`}</div>
+  </div>`;
+}
+
+function Attn({st,say}){
+  const [c,setC]=useState("10-A"),[m,setM]=useState({});
+  const list=st.filter(s=>s.cls===c),on=s=>m[s.id]!==false,pres=list.filter(on).length;
+  return html`<div class="card">
+    <div class="tb" style=${{justifyContent:"space-between",marginBottom:8}}><div class="tb">${CL.map(x=>html`<button key=${x} class=${"btn sm"+(x===c?"":" g")} onClick=${()=>setC(x)}>${x}</button>`)}</div><span class="pill ok">${pres}/${list.length} present</span></div>
+    ${list.map(s=>html`<div class="row" key=${s.id}><div class="who"><${Av} n=${s.name}/><div>${s.name}<div class="k" style=${{fontWeight:400}}>${s.roll}</div></div></div><div class="tb"><span class=${"pill "+(on(s)?"ok":"bad")}>${on(s)?"Present":"Absent"}</span><button class=${"tg"+(on(s)?" on":"")} aria-label="Toggle attendance" onClick=${()=>setM({...m,[s.id]:!on(s)})}></button></div></div>`)}
+    <div style=${{marginTop:16}}><button class="btn" onClick=${()=>say("Attendance saved for "+c)}>Save attendance</button></div>
+  </div>`;
+}
+
+function Fees({st,setSt,say}){
+  const t=f=>st.filter(s=>s.fee===f).length;
+  return html`<div>
+    <div class="grid3" style=${{marginBottom:16}}>${[["Paid",t("Paid"),"ok"],["Due",t("Due"),"warn"],["Overdue",t("Overdue"),"bad"]].map(c=>html`<div class="card" key=${c[0]}><div class="k">${c[0]}</div><div class="v">${c[1]}</div><span class=${"pill "+c[2]}>students</span></div>`)}</div>
+    <div class="card"><div class="x"><table><thead><tr><th>Student</th><th>Class</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>${st.map(s=>html`<tr key=${s.id}><td><div class="who"><${Av} n=${s.name}/>${s.name}</div></td><td>${s.cls}</td><td>₹ 14,500</td><td><${Pill} t=${s.fee}/></td><td>${s.fee!=="Paid"&&html`<button class="btn sm" onClick=${()=>{setSt(st.map(x=>x.id===s.id?{...x,fee:"Paid"}:x));say("Fee received from "+s.name)}}>Mark paid</button>`}</td></tr>`)}</tbody></table></div></div>
+  </div>`;
+}
+
+function Teach(){
+  const T=[["Nusrat Jahan","Mathematics",4],["Faisal Ahmed","Physics",3],["Rubina Sultana","English",5],["Tariq Alvi","Chemistry",3],["Shabana Parveen","Biology",4],["Mohammad Irfan","Computer Science",3]];
+  return html`<div class="grid3">${T.map(t=>html`<div class="card tc" key=${t[0]}><${Av} n=${t[0]}/><b>${t[0]}</b><small>${t[1]}</small><div style=${{marginTop:12}}><span class="pill ok">${t[2]} classes</span></div></div>`)}</div>`;
+}
+
+function Time(){
+  const S=["Maths","Physics","English","Chemistry","Biology","Comp. Sci"],H=["#6366f1","#0ea5e9","#16a34a","#d97706","#ec4899","#8b5cf6"];
+  const tm=["8:30","9:15","10:15","11:00","11:45"];
+  return html`<div class="card x"><div class="ttg"><div class="th">Time</div>${["Mon","Tue","Wed","Thu","Fri"].map(d=>html`<div class="th" key=${d}>${d}</div>`)}${tm.map((t,r)=>[html`<div class="th" key=${"t"+r}>${t}</div>`,...[0,1,2,3,4].map(c=>{const k=(r+c)%6;return html`<div class="cc" key=${r+"-"+c} style=${{"--h":H[k]}}>${S[k]}</div>`})])}</div></div>`;
+}
+
+function Notes(){
+  const N=[["Event","Annual Sports Day on 4 August","ok"],["Exam","Mid-term exam schedule released","warn"],["Fees","Term 2 fee due date extended to 15 August","bad"],["General","School closed on 15 August","ok"]];
+  return html`<div class="card">${N.map(n=>html`<div class="row" key=${n[1]}><div><b>${n[1]}</b><div class="k">Posted by Admin Office</div></div><span class=${"pill "+n[2]}>${n[0]}</span></div>`)}</div>`;
+}
+
+function Login({onOk,say}){
+  const [e,setE]=useState("admin@alfalah.edu"),[p,setP]=useState("admin123");
+  const go=()=>e.trim()==="admin@alfalah.edu"&&p==="admin123"?onOk():say("Incorrect email or password");
+  return html`<div class="login"><div class="lbox"><div class="logo">A</div><h2>Al-Falah Public School</h2><p>Sign in to the management portal</p><label>Email</label><input value=${e} onInput=${x=>setE(x.target.value)}/><label>Password</label><input type="password" value=${p} onInput=${x=>setP(x.target.value)} onKeyDown=${x=>x.key==="Enter"&&go()}/><button class="btn" onClick=${go}>Sign in</button><div class="hint">Demo login is pre-filled<br/>Developed by Md Saif</div></div></div>`;
+}
+
+function Detail({s,onClose}){
+  return html`<div class="ov" onClick=${onClose}><div class="md" onClick=${e=>e.stopPropagation()}><div class="mh"><${Av} n=${s.name}/><div><b>${s.name}</b><small>Class ${s.cls} · Roll ${s.roll}</small></div></div><div class="mb"><div class="kv"><div><small>Attendance</small><b>${s.att}%</b></div><div><small>Grade</small><b>${s.grade}</b></div><div><small>Fee status</small><b>${s.fee}</b></div><div><small>Session</small><b>2026–27</b></div></div><div class="tb" style=${{justifyContent:"space-between"}}><${Pill} t=${s.fee}/><button class="btn" onClick=${onClose}>Close</button></div></div></div></div>`;
+}
+
+function App(){
+  const [pg,setPg]=useState("Dashboard"),[st,setSt]=useState(S0),[toast,setToast]=useState(""),[gq,setGq]=useState(""),[dark,setDark]=useState(false),[user,setUser]=useState(false),[sel,setSel]=useState(null);
+  const flip=()=>{const d=!dark;setDark(d);document.documentElement.setAttribute("data-theme",d?"dark":"light")};
+  const say=m=>{setToast(m);setTimeout(()=>setToast(""),1900)};
+  const nav=[["Dashboard","grid","Overview of school activity today"],["Students","users","Manage admissions and records"],["Attendance","check","Mark daily attendance by class"],["Fees","wallet","Track and collect student fees"],["Teachers","teacher","Teaching staff directory"],["Timetable","clock","Weekly class schedule"],["Notices","bell","Announcements for the school"]];
+  const cur=nav.find(n=>n[0]===pg);
+  if(!user)return html`<div><${Login} onOk=${()=>{setUser(true);say("Welcome back, Md Saif")}} say=${say}/>${toast&&html`<div class="toast">${toast}</div>`}</div>`;
+  return html`<div class="app">
+    <aside class="side"><div class="brand"><div class="logo">A</div><div><b>Al-Falah Public School</b><small>Management Portal</small></div></div>
+      <nav class="nav">${nav.map(n=>html`<button key=${n[0]} class=${"nb"+(pg===n[0]?" on":"")} onClick=${()=>setPg(n[0])}><${Ico} n=${n[1]}/>${n[0]}</button>`)}</nav>
+      <div class="yr"><b>Academic year 2026–27</b>Term 2 · Week 6</div></aside>
+    <main><div class="top"><div><h1>${pg}</h1><div class="sub">${cur[2]}</div></div><div class="tb"><div class="sw"><${Ico} n="search" s=${16}/><input placeholder="Search students" value=${gq} onInput=${e=>{setGq(e.target.value);if(e.target.value)setPg("Students")}}/></div><button class="ib" aria-label="Notifications" onClick=${()=>say("You have 3 new notices")}><${Ico} n="bell"/><i></i></button><button class="ib" aria-label="Toggle theme" onClick=${flip}><${Ico} n="moon"/></button><div class="me" style=${{cursor:"pointer"}} title="Sign out" onClick=${()=>setUser(false)}><${Av} n="Md Saif"/>Md Saif · Admin</div></div></div>
+      <div class="pg" key=${pg}>${pg==="Dashboard"&&html`<${Dash} st=${st}/>`}
+      ${pg==="Students"&&html`<${Stu} st=${st} setSt=${setSt} say=${say} q=${gq} setQ=${setGq} setSel=${setSel}/>`}
+      ${pg==="Attendance"&&html`<${Attn} st=${st} say=${say}/>`}
+      ${pg==="Fees"&&html`<${Fees} st=${st} setSt=${setSt} say=${say}/>`}
+      ${pg==="Teachers"&&html`<${Teach}/>`}
+      ${pg==="Timetable"&&html`<${Time}/>`}
+      ${pg==="Notices"&&html`<${Notes}/>`}</div>
+    </main>
+    ${sel&&html`<${Detail} s=${sel} onClose=${()=>setSel(null)}/>`}
+    ${toast&&html`<div class="toast">${toast}</div>`}
+  </div>`;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
+</script>
+</body>
+</html>
